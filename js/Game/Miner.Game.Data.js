@@ -86,17 +86,16 @@ Miner.Game.Data = Miner.Game.Data || {
         }
     },
 
-	'screenData': {
-		'title': {
-			'bgImage': 'images/title.png',
-			'bindings': {
-				'**': function(game) {
-					return game.gameMain(true);
-				}
-			} 
-		},
-		
-	},
+    'screenData': {
+        'title': {
+            'bgImage': 'images/title.png',
+            'bindings': {
+                'x': function(game) {
+                    return game.gameMain(true);
+                }
+            } 
+        }  
+    },
     
     'cellData': {
         'Platinum': {

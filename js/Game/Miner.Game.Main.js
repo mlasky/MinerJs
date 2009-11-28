@@ -31,13 +31,13 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
     },
     
     '_start': function() {
-        this._reset();
-        return this._showTitle();
+        this.reset();
+        return this.showTitle();
     },
 
-    '_showTitle': function() {
+    'showTitle': function() {
         var data = this._data;
-        if (!this._renderer.showScreen(data.screenData['title'])) {
+        if (!this._showScreen(data.screenData['title'])) {
             return false;
         }
 
@@ -48,28 +48,28 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
         bindEvents = bindEvents || false;
         
         if (bindEvents) {
-            this._events.subscribe('Left', function(e) {
+            this._events.subscribe('Left', function(game) {
                 this._player.moveLeft();
-                return this.gameMain();
+                return game.gameMain();
             });
 
-            this._events.subscribe('Right', function(e) {
+            this._events.subscribe('Right', function(game) {
                 this._player.moveRight();
-                return this.gameMain();
+                return game.gameMain();
             });
 
-            this._events.subscribe('Up', function(e) {
+            this._events.subscribe('Up', function(game) {
                 this._player.moveUp();
-                return this.gameMain();
+                return game.gameMain();
             });
 
-            this._events.subscribe('Down', function(e) {
+            this._events.subscribe('Down', function(game) {
                 this._player.moveDown();
-                return this.gameMain();
+                return game.gameMain();
             });
 
-            this._events.subscribe('x', function(e) {
-                return this._showCredits();
+            this._events.subscribe('x', function(game) {
+                return game.showCredits();
             });
         }
         
@@ -80,16 +80,33 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
         return true;
     },
     
-    '_showCredits': function() {
+    'showCredits': function() {
         var data = this._data;
-        if (!this._renderer.showScreen(data.screenData['credits'])) {
+        if (!this._showScreen(data.screenData['credits'])) {
             return false;
         }
         
         return true;
     },
     
-    '_reset': function() {
+    '_showScreen': function(screen) {
+	    screen = screen || {};
+	    var bindings = screen.bindings || {};
+	    
+	    for (var k in bindings) {
+	        if (!this._events.subscribe(k, bindings[k])) {
+	            return false;
+	        }
+	    }
+	    
+	    if (!this._renderer.renderBg(screen.bgImage)) {
+	        return false;
+	    }
+	    
+		return true;
+	},
+    
+    'reset': function() {
         if (!this._events.reset()) {
             return false;
         }
