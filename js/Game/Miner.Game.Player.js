@@ -18,6 +18,19 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
         return this;
     },
     
+    'transact': function(o) {
+        o = o || {};
+        var type = o.type;
+        var amount = o.amount;
+        
+        if (!type || !amount || !(type in this.money)) {
+            throw new TypeError('Invalid transaction object');
+        }
+        
+        this.money[type] += amount;
+        return true;
+    },
+    
     'addItem': function(item) {
         if (typeof item !== 'MinerJs Inventory Item') {
             throw new TypeError('Invalid Item');
@@ -67,7 +80,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveLeft': function() {
-        var nextCell = this.game.grid.getLeft(this.position.cell);
+        var nextCell = this.game.grid.left(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            return this._changePosition(nextCell); 
         }
@@ -75,7 +88,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveRight': function() {
-        var nextCell = this.game.grid.getRight(this.position.cell);
+        var nextCell = this.game.grid.right(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            return this._changePosition(nextCell); 
         }
@@ -83,7 +96,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveUp': function() {
-        var nextCell = this.game.grid.getUp(this.position.cell);
+        var nextCell = this.game.grid.above(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            this._changePosition(nextCell); 
         }
@@ -91,7 +104,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveDown': function() {
-        var nextCell = this.game.grid.getDown(this.position.cell);
+        var nextCell = this.game.grid.below(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            return this._changePosition(nextCell); 
         }

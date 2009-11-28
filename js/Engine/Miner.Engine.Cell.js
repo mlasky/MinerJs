@@ -5,9 +5,8 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
     'init': function(o) {
         o = o || {};
         this._bgImage = o.bgImage || null;  // bg for the cell
-        this._blocking = false;             // blocks movement?
-        this._hasPlayer = false;            // Player present (connonical)
-        this._player = o.player || null;    // Player obj when player is on cell    
+        this._blocking = o._blocking || false;             // blocks movement?
+        this._hasPlayer = o._hasPlayer || false;            // Player present (connonical)
         this._soundMgr = o.soundMgr || {};  // Sound management object
         this._sounds = o.sounds || {};      // Sound effects for this cell
         this._grid = o.grid || {};           // Game grid object
@@ -22,8 +21,7 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
         if (typeof player !== 'MinerJs Player Object') {
             throw new TypeError('Invalid Player Object');
         }
-        
-        return !this._blocking;
+        return this.registerPlayer(player);
     },
 
     'registerPlayer': function(player) {
@@ -37,11 +35,15 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
             return false;
         }
         
+        if (typeof this.onPlayerEnter !== 'function') {
+            if (!this.onPlayerEnter(player)) {
+                return false;
+            }
+        }
+        
         player.Position.Cell.unregisterPlayer();
         player.Position.Cell = this;
         this._hasPlayer = true;
-        
-        this._playSound('playerEnter');
         
         return true;
     },
@@ -69,15 +71,22 @@ Miner.Engine.Cell.Air = Miner.Engine.Cell.Air || Miner.Engine.Cell.extend({
     'init': function(o) {
         this._super(o);
         this.type = 'Air';
+        
         return this;
     },
     
     'hasPlayer': function(player) {
         return this._super(player);
     },
-
-    'acceptsPlayer': function() {
-        return this._super();
+    
+    'onPlayerEnter': function(player) {
+        // Player is approaching from the left or right
+        return player.cell.grid.left(player.cell) === this ||
+            player.cell.grid.right(player.cell) === this;
+    },
+    
+    'enter': function(player) {
+        return this._super(player);
     },
 
     'registerPlayer': function(player) {
@@ -101,6 +110,8 @@ Miner.Engine.Cell.Door = Miner.Engine.Cell.Door || Miner.Engine.Cell.extend({
     'init': function(o) {
         this._super(o);
         this.type = 'Door';
+        this._bgImage = 'images/door.png';
+        
         return this;
     },
     
@@ -108,8 +119,8 @@ Miner.Engine.Cell.Door = Miner.Engine.Cell.Door || Miner.Engine.Cell.extend({
         return this._super(player);
     },
 
-    'acceptsPlayer': function() {
-        return this._super();
+    'enter': function(player) {
+        return this._super(player);
     },
 
     'registerPlayer': function(player) {
@@ -131,7 +142,13 @@ Miner.Engine.Cell.Door = Miner.Engine.Cell.Door || Miner.Engine.Cell.extend({
 
 Miner.Engine.Cell.Dirt = Miner.Engine.Cell.Dirt || Miner.Engine.Cell.extend({
     'init': function(o) {
- 
+        o = o || {};
+        this._super(o);
+        
+        this._bgImage = (Miner.Engine.Util.randomChance(2))?
+            'images/dirt1.png':
+            'images/dirt2.png';
+        
         this.type = 'Dirt';
         this._modifier = false;
         
@@ -166,8 +183,8 @@ Miner.Engine.Cell.Dirt = Miner.Engine.Cell.Dirt || Miner.Engine.Cell.extend({
         return this._super(player);
     },
 
-    'acceptsPlayer': function() {
-        return this._super();
+    'enter': function(player) {
+        return this._super(player);
     },
 
     'registerPlayer': function(player) {
@@ -191,6 +208,7 @@ Miner.Engine.Cell.Tunnel = Miner.Engine.Cell.Tunnel || Miner.Engine.Cell.extend(
     'init': function(o) {
         this._super(o);
         this.type = 'Tunnel';
+        
         return this;
     },
     
@@ -198,8 +216,8 @@ Miner.Engine.Cell.Tunnel = Miner.Engine.Cell.Tunnel || Miner.Engine.Cell.extend(
         return this._super(player);
     },
 
-    'acceptsPlayer': function() {
-        return this._super();
+    'enter': function(player) {
+        return this._super(player);
     },
 
     'registerPlayer': function(player) {
@@ -222,7 +240,11 @@ Miner.Engine.Cell.Tunnel = Miner.Engine.Cell.Tunnel || Miner.Engine.Cell.extend(
 Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.extend({
     'init': function(o) {
         this._super(o);
+        this._bgImage = 'images/elevator.png';
+        
+        this.hasCar = o.hasCar || false;
         this.type = 'Elevator';
+        
         return this;
     },
     
@@ -230,8 +252,8 @@ Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.ext
         return this._super(player);
     },
 
-    'acceptsPlayer': function() {
-        return this._super();
+    'enter': function(player) {
+        return this._super(player);
     },
 
     'registerPlayer': function(player) {
@@ -253,8 +275,17 @@ Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.ext
 
 Miner.Engine.Cell.ElevatorCar = Miner.Engine.Cell.ElevatorCar || Miner.Engine.Cell.extend({
     'init': function(o) {
+        o.hasCar = true;
+        return new Miner.Engine.Cell.Elevator(o);
+    }
+});
+
+Miner.Engine.Cell.Road = Miner.Engine.Cell.Road || Miner.Engine.Cell.extend({
+    'init': function(o) {
         this._super(o);
-        this.type = 'ElevatorCar';
+        this._bgImage = 'images/divider.png';
+        
+        this.type = 'Road';
         return this;
     },
     
@@ -262,8 +293,8 @@ Miner.Engine.Cell.ElevatorCar = Miner.Engine.Cell.ElevatorCar || Miner.Engine.Ce
         return this._super(player);
     },
 
-    'acceptsPlayer': function() {
-        return this._super();
+    'enter': function(player) {
+        return this._super(player);
     },
 
     'registerPlayer': function(player) {
@@ -283,10 +314,14 @@ Miner.Engine.Cell.ElevatorCar = Miner.Engine.Cell.ElevatorCar || Miner.Engine.Ce
     }
 });
 
-Miner.Engine.Cell.Road = Miner.Engine.Cell.Road || Miner.Engine.Cell.extend({
+Miner.Engine.Cell.Water = Miner.Engine.Cell.Water || Miner.Engine.Cell.extend({
     'init': function(o) {
+        o = o || {};
         this._super(o);
-        this.type = 'Road';
+        this._bgImage = 'images/water.png';
+        
+        this.type = 'Water';
+        
         return this;
     },
     
@@ -294,8 +329,8 @@ Miner.Engine.Cell.Road = Miner.Engine.Cell.Road || Miner.Engine.Cell.extend({
         return this._super(player);
     },
 
-    'acceptsPlayer': function() {
-        return this._super();
+    'enter': function(player) {
+        return this._super(player);
     },
 
     'registerPlayer': function(player) {
