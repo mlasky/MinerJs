@@ -6,6 +6,13 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
         o = o || {};
         this._canvas = o.canvas || {};
         this._ctx = this._canvas.getContext("2d");
-        
-    }
+		
+		return this;
+    },
+	
+	'getCtx': function() { return this._ctx; },
+	
+	'showScreen': function(screen) {
+		return true;
+	}
 });

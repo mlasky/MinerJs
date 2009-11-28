@@ -85,6 +85,18 @@ Miner.Game.Data = Miner.Game.Data || {
             'basePrice': 2000
         }
     },
+
+	'screenData': {
+		'title': {
+			'bgImage': 'images/title.png',
+			'bindings': {
+				'**': function(game) {
+					return game.gameMain(true);
+				}
+			} 
+		},
+		
+	},
     
     'cellData': {
         'Platinum': {

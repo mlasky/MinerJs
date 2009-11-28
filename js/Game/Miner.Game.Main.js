@@ -10,11 +10,15 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
         
         this._data = Miner.Game.Data;
         
-        this._grid = new Miner.Engine.Grid({
+        this.grid = new Miner.Engine.Grid({
             'game': this,
             'map': this._config.map
         });
         
+		this._events = new Miner.Engine.EventManager({
+			'game': this
+		});
+		
         this._renderer = new Miner.Engine.Renderer({
             'game': this,
             'canvas': this._config.canvas,
@@ -36,36 +40,32 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
         if (!this._renderer.showScreen(data.screenData['title'])) {
             return false;
         }
-        
-        this._events.subscribe('**', function(e) { 
-            return this._gameMain(true);
-        }.bind(this));
-        
+
         return true;
     },
     
-    '_gameMain': function(bindEvents) {
+    'gameMain': function(bindEvents) {
         bindEvents = bindEvents || false;
         
         if (bindEvents) {
             this._events.subscribe('Left', function(e) {
                 this._player.moveLeft();
-                return this._gameMain();
+                return this.gameMain();
             });
 
             this._events.subscribe('Right', function(e) {
                 this._player.moveRight();
-                return this._gameMain();
+                return this.gameMain();
             });
 
             this._events.subscribe('Up', function(e) {
                 this._player.moveUp();
-                return this._gameMain();
+                return this.gameMain();
             });
 
             this._events.subscribe('Down', function(e) {
                 this._player.moveDown();
-                return this._gameMain();
+                return this.gameMain();
             });
 
             this._events.subscribe('x', function(e) {
