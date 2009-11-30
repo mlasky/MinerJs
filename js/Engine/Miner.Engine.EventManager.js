@@ -20,7 +20,6 @@ Miner.Engine.EventManager = Miner.Engine.EventManager || Class.extend({
 	        keyCode = String(this._data.keyCodes[strKeyCode]);
 	        this._events[keyCode] = [];
 	    }
-	    
 	    this._events[keyCode].push(fn);
 	    
 	    return true;

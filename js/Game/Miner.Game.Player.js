@@ -11,9 +11,15 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
             'silver': o.silver || 0,
             'cash': o.cash || 1500
         };
+        
         this.activate = o.activate || null;
         this.inventory = o.inventory || {};
-        this.inventory.items = o.inventory.items || [];
+        this.inventory.items = this.inventory.items || [];
+        
+        this.game = o.game || {};
+        
+        this.position = o.position || {};
+        this.position.cell = this.position.cell || this.game.grid.getCell(10,3);
         
         return this;
     },
@@ -84,6 +90,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
         if (nextCell && nextCell.enter(this)) {
            return this._changePosition(nextCell); 
         }
+
         return false;
     },
     
@@ -96,7 +103,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveUp': function() {
-        var nextCell = this.game.grid.above(this.position.cell);
+        var nextCell = this.game.grid.up(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            this._changePosition(nextCell); 
         }
@@ -104,7 +111,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveDown': function() {
-        var nextCell = this.game.grid.below(this.position.cell);
+        var nextCell = this.game.grid.down(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            return this._changePosition(nextCell); 
         }

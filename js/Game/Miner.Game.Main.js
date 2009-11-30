@@ -25,6 +25,9 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
             'grid': this._grid
         });
         
+        this._player = new Miner.Game.Player({
+            'game': this
+        })
         this._start();
         
         return this;
@@ -46,25 +49,27 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
     
     'gameMain': function(bindEvents) {
         bindEvents = bindEvents || false;
+        var self = this;
+        console.log(self._player.position.cell.x + ',' + self._player.position.cell.y)
         
         if (bindEvents) {
             this._events.subscribe('Left', function(game) {
-                this._player.moveLeft();
+                self._player.moveLeft();
                 return game.gameMain();
             });
 
             this._events.subscribe('Right', function(game) {
-                this._player.moveRight();
+                self._player.moveRight();
                 return game.gameMain();
             });
 
             this._events.subscribe('Up', function(game) {
-                this._player.moveUp();
+                self._player.moveUp();
                 return game.gameMain();
             });
 
             this._events.subscribe('Down', function(game) {
-                this._player.moveDown();
+                self._player.moveDown();
                 return game.gameMain();
             });
 

@@ -10,6 +10,8 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
         this._soundMgr = o.soundMgr || {};  // Sound management object
         this._sounds = o.sounds || {};      // Sound effects for this cell
         this._grid = o.grid || {};           // Game grid object
+        this.x = o.x || 0;
+        this.y = o.y || 0;
         return this;
     },
     
@@ -18,31 +20,25 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
     },
 
     'enter': function(player) {
-        if (typeof player !== 'MinerJs Player Object') {
-            throw new TypeError('Invalid Player Object');
-        }
         return this.registerPlayer(player);
     },
 
     'registerPlayer': function(player) {
-        
-        if (typeof player !== 'MinerJs Player') {
-            throw new TypeError('Invalid Player Object');
-        }
-        
+        player = player || {};
+        console.log(this.type);
         // sanity check, make sure we already don't have this player
         if (this.hasPlayer()) {
             return false;
         }
         
-        if (typeof this.onPlayerEnter !== 'function') {
+        if (typeof this.onPlayerEnter === 'function') {
             if (!this.onPlayerEnter(player)) {
                 return false;
             }
         }
         
-        player.Position.Cell.unregisterPlayer();
-        player.Position.Cell = this;
+        player.position.cell.unregisterPlayer();
+        player.position.cell = this;
         this._hasPlayer = true;
         
         return true;
@@ -81,8 +77,8 @@ Miner.Engine.Cell.Air = Miner.Engine.Cell.Air || Miner.Engine.Cell.extend({
     
     'onPlayerEnter': function(player) {
         // Player is approaching from the left or right
-        return player.cell.grid.left(player.cell) === this ||
-            player.cell.grid.right(player.cell) === this;
+        return player.game.grid.left(player.position.cell) === this ||
+            player.game.grid.right(player.position.cell) === this;
     },
     
     'enter': function(player) {
@@ -291,6 +287,10 @@ Miner.Engine.Cell.Road = Miner.Engine.Cell.Road || Miner.Engine.Cell.extend({
     
     'hasPlayer': function(player) {
         return this._super(player);
+    },
+    
+    'onPlayerEnter': function(player) {
+        return false;
     },
 
     'enter': function(player) {

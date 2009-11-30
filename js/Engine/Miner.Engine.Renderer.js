@@ -19,7 +19,6 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
 	    
 	    image = new Image();
 	    image.onload = function() {
-	        console.log(image);
 	        self._ctx.drawImage(image,0,0);
 	    };
 	    
