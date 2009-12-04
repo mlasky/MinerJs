@@ -29,15 +29,6 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
 	    
 	},
 	
-	'renderGame': function(game) {
-	    var self = this;
-	    this.game = game;
-	    this.renderBg('images/base_bg.png', function(context) {
-	        self.game.grid.render(16, 24);
-	    });
-	    return true;
-	},
-	
 	'drawImg': function(img, x, y) {
 	    var self = this;
 	    var image = new Image();

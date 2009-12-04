@@ -3,7 +3,7 @@ var map = {
     	['Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar'],
     	['Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar'],
     	['Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar'],
-    	['Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ec'],
+    	['Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Do','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','Ar','El'],
     	['Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','Rd','El'],
     	['Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','El'],
     	['Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','Dt','El'],

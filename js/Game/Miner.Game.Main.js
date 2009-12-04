@@ -78,12 +78,20 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
             });
         }
         
-        if (!this.renderer.renderGame(this)) {
+        if (!this.renderGame()) {
             return false;
         }
         
         return true;
     },
+    
+    'renderGame': function() {
+	    var self = this;
+	    this.renderer.renderBg('images/base_bg.png', function(context) {
+	        self.grid.render(16, 24, 40, 17);
+	    });
+	    return true;
+	},
     
     'showCredits': function() {
         var data = this._data;

@@ -54,10 +54,16 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
     },
 
     'render': function(x,y) {
-        var bgImage = this._bgImage;
-        if (bgImage) {
-            this._game.renderer.drawImg(bgImage,x,y);
+        if (this._hasPlayer) {
+            this._game.renderer.drawRect(x,y,this.width, this.height);
         }
+        else {
+            var bgImage = this._bgImage;
+            if (bgImage) {
+                this._game.renderer.drawImg(bgImage,x,y);
+            }
+        }
+        
         return true;
     },
 
@@ -241,8 +247,9 @@ Miner.Engine.Cell.Tunnel = Miner.Engine.Cell.Tunnel || Miner.Engine.Cell.extend(
 
 Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.extend({
     'init': function(o) {
-        this._super(o);
         this._bgImage = 'images/elevator.png';
+        o.bgImage = this._bgImage;
+        this._super(o);
         
         this.hasCar = o.hasCar || false;
         this.type = 'Elevator';
