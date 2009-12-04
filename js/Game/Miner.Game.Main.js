@@ -19,15 +19,16 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
 			'game': this
 		});
 		
-        this._renderer = new Miner.Engine.Renderer({
+        this.renderer = new Miner.Engine.Renderer({
             'game': this,
             'canvas': this._config.canvas,
-            'grid': this._grid
+            'grid': this.grid
         });
         
         this._player = new Miner.Game.Player({
             'game': this
-        })
+        });
+        
         this._start();
         
         return this;
@@ -50,7 +51,6 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
     'gameMain': function(bindEvents) {
         bindEvents = bindEvents || false;
         var self = this;
-        console.log(self._player.position.cell.x + ',' + self._player.position.cell.y)
         
         if (bindEvents) {
             this._events.subscribe('Left', function(game) {
@@ -78,7 +78,7 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
             });
         }
         
-        if (!this._renderer.renderGame()) {
+        if (!this.renderer.renderGame(this)) {
             return false;
         }
         
@@ -104,7 +104,7 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
 	        }
 	    }
 	    
-	    if (!this._renderer.renderBg(screen.bgImage)) {
+	    if (!this.renderer.renderBg(screen.bgImage)) {
 	        return false;
 	    }
 	    

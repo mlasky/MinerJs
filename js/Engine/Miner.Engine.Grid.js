@@ -5,7 +5,8 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
     'init': function(o) {
         // "Private"
         this._map = o.map || {};
-        this._game = o.game || {};
+        this.game = o.game || {};
+        
         this._cellTypes = {
             'Ar': 'Air',
             'Do': 'Door',
@@ -50,12 +51,11 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
                 var grid = this._grid[offset];
                 grid.cell = new Miner.Engine.Cell[type]({
                     'grid': this,
+                    'game': this.game,
                     'x': j,
                     'y': i
                 });
                 
-                grid.row = i;
-                grid.col = j;
             }
         }
         
@@ -96,5 +96,25 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
         var x = Number(cell.x);
         var y = Number(cell.y) + 1;
         return this.getCell(x, y);
+    },
+    
+    'render': function(x, y, width, height, y_offset) {
+        var game = this.game;
+        var grid = this._grid;
+        var len = grid.length;
+        width = width || this.cols;
+        height = height || this.rows;
+        
+        
+        for (i = 0; i < len; i++) {
+            var cell = grid[i].cell;
+            var row = cell.y;
+            var col = cell.x;
+         
+            var render_x = x + (col * cell.width);
+            var render_y = y + (row * cell.height);
+            cell.render(render_x, render_y);
+        }
+        return true;
     }
 });

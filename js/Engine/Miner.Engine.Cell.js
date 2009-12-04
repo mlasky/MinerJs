@@ -10,8 +10,11 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
         this._soundMgr = o.soundMgr || {};  // Sound management object
         this._sounds = o.sounds || {};      // Sound effects for this cell
         this._grid = o.grid || {};           // Game grid object
+        this._game = o.game || {};
         this.x = o.x || 0;
         this.y = o.y || 0;
+        this.width = o.width || 16;
+        this.height = o.height || 24;
         return this;
     },
     
@@ -25,7 +28,7 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
 
     'registerPlayer': function(player) {
         player = player || {};
-        console.log(this.type);
+        
         // sanity check, make sure we already don't have this player
         if (this.hasPlayer()) {
             return false;
@@ -50,7 +53,11 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
         return true;
     },
 
-    'render': function() {
+    'render': function(x,y) {
+        var bgImage = this._bgImage;
+        if (bgImage) {
+            this._game.renderer.drawImg(bgImage,x,y);
+        }
         return true;
     },
 
@@ -93,8 +100,8 @@ Miner.Engine.Cell.Air = Miner.Engine.Cell.Air || Miner.Engine.Cell.extend({
         return this._super();
     },
 
-    'render': function() {
-        return this._super();
+    'render': function(x,y) {
+        return this._super(x,y);
     },
 
     '_playSound': function(soundLabel) {
@@ -106,8 +113,7 @@ Miner.Engine.Cell.Door = Miner.Engine.Cell.Door || Miner.Engine.Cell.extend({
     'init': function(o) {
         this._super(o);
         this.type = 'Door';
-        this._bgImage = 'images/door.png';
-        
+         
         return this;
     },
     
@@ -127,8 +133,8 @@ Miner.Engine.Cell.Door = Miner.Engine.Cell.Door || Miner.Engine.Cell.extend({
         return this._super();
     },
 
-    'render': function() {
-        return this._super();
+    'render': function(x,y) {
+        return this._super(x,y);
     },
 
     '_playSound': function(soundLabel) {
@@ -191,8 +197,8 @@ Miner.Engine.Cell.Dirt = Miner.Engine.Cell.Dirt || Miner.Engine.Cell.extend({
         return this._super();
     },
 
-    'render': function() {
-        return this._super();
+    'render': function(x,y) {
+        return this._super(x,y);
     },
 
     '_playSound': function(soundLabel) {
@@ -224,8 +230,8 @@ Miner.Engine.Cell.Tunnel = Miner.Engine.Cell.Tunnel || Miner.Engine.Cell.extend(
         return this._super();
     },
 
-    'render': function() {
-        return this._super();
+    'render': function(x,y) {
+        return this._super(x,y);
     },
 
     '_playSound': function(soundLabel) {
@@ -260,8 +266,8 @@ Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.ext
         return this._super();
     },
 
-    'render': function() {
-        return this._super();
+    'render': function(x,y) {
+        return this._super(x,y);
     },
 
     '_playSound': function(soundLabel) {
@@ -305,8 +311,8 @@ Miner.Engine.Cell.Road = Miner.Engine.Cell.Road || Miner.Engine.Cell.extend({
         return this._super();
     },
 
-    'render': function() {
-        return this._super();
+    'render': function(x,y) {
+        return this._super(x,y);
     },
 
     '_playSound': function(soundLabel) {
@@ -341,8 +347,8 @@ Miner.Engine.Cell.Water = Miner.Engine.Cell.Water || Miner.Engine.Cell.extend({
         return this._super();
     },
 
-    'render': function() {
-        return this._super();
+    'render': function(x,y) {
+        return this._super(x,y);
     },
 
     '_playSound': function(soundLabel) {

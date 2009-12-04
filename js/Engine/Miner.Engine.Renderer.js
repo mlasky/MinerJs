@@ -13,20 +13,50 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
 	
 	'getCtx': function() { return this._ctx; },
 	
-	'renderBg': function(imagePath) {
+	'renderBg': function(imagePath, fn) {
 	    var self = this;
 	    var image;
 	    
 	    image = new Image();
 	    image.onload = function() {
 	        self._ctx.drawImage(image,0,0);
+	        if (typeof fn === 'function') {
+	            fn(self);
+	        }
 	    };
 	    
 	    image.src = imagePath;
 	    
 	},
 	
-	'renderGame': function() {
-	    this.renderBg('images/base_bg.png');
+	'renderGame': function(game) {
+	    var self = this;
+	    this.game = game;
+	    this.renderBg('images/base_bg.png', function(context) {
+	        self.game.grid.render(16, 24);
+	    });
+	    return true;
+	},
+	
+	'drawImg': function(img, x, y) {
+	    var self = this;
+	    var image = new Image();
+	    image.onload = function() {
+	        self._ctx.drawImage(image, x, y);
+	    };
+	    image.src = img;
+	    return true;
+	},
+	
+	'drawRect': function(x,y,width,height) {
+	    var ctx = this._ctx;
+	    var random = Miner.Engine.Util.random;
+	    var color_r = random(200, 2000);
+	    var color_g = random(200, 2000);
+	    var color_b = random(200, 2000);
+	    
+	    ctx.fillStyle = "rgba("+color_r+","+color_g+","+color_b+", 0.5)";
+	    
+	    ctx.fillRect(x,y,width,height);
 	}
 });
