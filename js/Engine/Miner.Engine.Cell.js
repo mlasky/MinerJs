@@ -54,14 +54,12 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
     },
 
     'render': function(x,y) {
-        if (this._hasPlayer) {
-            this._game.renderer.drawRect(x,y,this.width, this.height);
-        }
-        else {
-            var bgImage = this._bgImage;
-            if (bgImage) {
-                this._game.renderer.drawImg(bgImage,x,y);
-            }
+        this.render_x = x;
+        this.render_y = y;
+        
+        var bgImage = this._bgImage;
+        if (bgImage) {
+            this._game.renderer.drawImg(bgImage,x,y);
         }
         
         return true;

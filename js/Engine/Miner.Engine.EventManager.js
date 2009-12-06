@@ -10,7 +10,7 @@ Miner.Engine.EventManager = Miner.Engine.EventManager || Class.extend({
 		    self._dispatch(key.keyCode);
         });
         
-		return true;
+        return true;
 	},
 	
 	'subscribe': function(strKeyCode, fn) {
@@ -29,7 +29,6 @@ Miner.Engine.EventManager = Miner.Engine.EventManager || Class.extend({
 	    if (keyCode in this._events) {
 	        var events = this._events[keyCode];
 	        var len_events = events.length;
-	        
 	        for (var i = 0; i < len_events; i++) {
 	            var event = events[i];
 	            if (typeof event === 'function') {

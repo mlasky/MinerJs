@@ -30,12 +30,12 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
         });
         
         this._start();
-        
         return this;
     },
     
     '_start': function() {
         this.reset();
+        this.renderer.render();
         return this.showTitle();
     },
 
@@ -44,7 +44,6 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
         if (!this._showScreen(data.screenData['title'])) {
             return false;
         }
-
         return true;
     },
     
@@ -86,10 +85,9 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
     },
     
     'renderGame': function() {
-	    var self = this;
-	    this.renderer.renderBg('images/base_bg.png', function(context) {
-	        self.grid.render(16, 24, 40, 17);
-	    });
+	    this.renderer.renderBg('images/base_bg.png');
+	    this.grid.render(16, 24, 40, 17);
+	    this._player.render();
 	    return true;
 	},
     
@@ -108,11 +106,13 @@ Miner.Game.Main = Miner.Game.Main || Class.extend({
 	    
 	    for (var k in bindings) {
 	        if (!this._events.subscribe(k, bindings[k])) {
+	            console.log('failed subscribe')
 	            return false;
 	        }
 	    }
 	    
 	    if (!this.renderer.renderBg(screen.bgImage)) {
+	        console.log('failed renderBg')
 	        return false;
 	    }
 	    

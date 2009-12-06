@@ -7,11 +7,25 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
         this._images = {};
         this._canvas = o.canvas || {};
         this._ctx = this._canvas.getContext("2d");
+		this._buffer = o.buffer || $('<canvas />').attr({
+		    'style': $(this._canvas).attr('style'),
+		    'width': $(this._canvas).attr('width'),
+		    'height': $(this._canvas).attr('height')
+		}).get(0);
+		this._bCtx = this._buffer.getContext("2d");
 		
 		return this;
     },
 	
-	'getCtx': function() { return this._ctx; },
+	'render': function() {
+	    var self = this;
+	    window.setInterval(function() {
+	        return self._ctx.drawImage(self._buffer, 0, 0);
+	    }, 50);
+	    return true;
+	},
+	
+	'getCtx': function() { return this._bCtx; },
 	
 	'renderBg': function(imagePath, fn) {
 	    var self = this;
@@ -19,28 +33,29 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
 	    
 	    image = new Image();
 	    image.onload = function() {
-	        self._ctx.drawImage(image,0,0);
+	        self.getCtx().drawImage(image,0,0);
 	        if (typeof fn === 'function') {
 	            fn(self);
 	        }
+	        return true;
 	    };
 	    
 	    image.src = imagePath;
-	    
+	    return true;
 	},
 	
 	'drawImg': function(img, x, y) {
 	    var self = this;
 	    var image = new Image();
 	    image.onload = function() {
-	        self._ctx.drawImage(image, x, y);
+	        self.getCtx().drawImage(image, x, y);
 	    };
 	    image.src = img;
 	    return true;
 	},
 	
 	'drawRect': function(x,y,width,height) {
-	    var ctx = this._ctx;
+	    var ctx = this.getCtx();
 	    var random = Miner.Engine.Util.random;
 	    var color_r = random(200, 2000);
 	    var color_g = random(200, 2000);
@@ -49,5 +64,7 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
 	    ctx.fillStyle = "rgba("+color_r+","+color_g+","+color_b+", 0.5)";
 	    
 	    ctx.fillRect(x,y,width,height);
+	    
+	    return true;
 	}
 });

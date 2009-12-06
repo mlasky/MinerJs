@@ -16,6 +16,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
         this.inventory = o.inventory || {};
         this.inventory.items = this.inventory.items || [];
         
+        this._playerImg = 'images/player_right.png';
         this.game = o.game || {};
         
         this.position = o.position || {};
@@ -86,6 +87,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveLeft': function() {
+        this._playerImg = 'images/player_left.png';
         var nextCell = this.game.grid.left(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            return this._changePosition(nextCell); 
@@ -95,6 +97,7 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
     },
     
     'moveRight': function() {
+        this._playerImg = 'images/player_right.png';
         var nextCell = this.game.grid.right(this.position.cell);
         if (nextCell && nextCell.enter(this)) {
            return this._changePosition(nextCell); 
@@ -116,6 +119,12 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
            return this._changePosition(nextCell); 
         }
         return false;
+    },
+    
+    'render': function() {
+        var cell = this.position.cell;
+        this.game.renderer.drawImg(this._playerImg, cell.render_x, cell.render_y);
+        return true;
     },
     
     '_changePosition': function(cell) {

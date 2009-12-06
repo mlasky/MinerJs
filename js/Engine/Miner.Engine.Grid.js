@@ -101,7 +101,7 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
         return this.getCell(x, y);
     },
     
-    'render': function(x, y, width, height, y_offset) {
+    'render': function(x, y, width, height, fn) {
         var game = this.game;
         var grid = this._grid;
         var len = grid.length;
@@ -120,6 +120,11 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
                 cell.render(render_x, render_y);
             }
         }
+        
+        if (typeof fn === 'function') {
+            fn(this);
+        }
+        
         return true;
     }
 });
