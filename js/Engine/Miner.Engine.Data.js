@@ -65,14 +65,13 @@ Miner.Engine.Data = Miner.Engine.Data || {
                 for (var i = 0; i < lenSubGrid; i++) {
                     var cell = subGrid[i];
                     if ((cell.type === 'Dirt' && cell.dug === true) &&
-                        (cell.x !== player_cell.x && cell.y !== player_cell.y)) 
+                        !(cell.x === player_cell.x && cell.y === player_cell.y)) 
                     {
                         cell = new Miner.Engine.Cell.Dirt({
                             'grid': grid,
                             'game': player.game,
                             'x': cell.x,
                             'y': cell.y,
-                            'bgImage': 'images/dirt1.png'
                         });
                         grid.setCell(cell.x, cell.y, cell);
                     }
@@ -112,9 +111,10 @@ Miner.Engine.Data = Miner.Engine.Data || {
                 for (var i = 0; i < lenSubGrid; i++) {
                     var cell = subGrid[i];
                     if ((cell.type === 'Dirt' && cell.dug === true) &&
-                        (cell.x !== player_cell.x && cell.y !== player_cell.y)) 
+                        !(cell.x === player_cell.x && cell.y === player_cell.y)) 
                     {
-                        cell = new Miner.Engine.Cell.Water({
+                        cell = new Miner.Engine.Cell.Dirt({
+                            'modifier': 'Water',
                             'grid': grid,
                             'game': player.game,
                             'x': cell.x,
@@ -132,6 +132,7 @@ Miner.Engine.Data = Miner.Engine.Data || {
             'dugImage': 'images/rock.png',
             
             'onPlayerEnter': function() {
+                console.log('false')
                 return false;
             }
         }

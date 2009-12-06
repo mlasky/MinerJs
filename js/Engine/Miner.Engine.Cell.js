@@ -159,7 +159,6 @@ Miner.Engine.Cell.Dirt = Miner.Engine.Cell.Dirt || Miner.Engine.Cell.extend({
         this.type = 'Dirt';
         this.dug = false;
         
-        this._modifier = false;
         
         if (Miner.Engine.Util.randomChance()) {
             var rand = Miner.Engine.Util.random(100, 1000);
@@ -184,9 +183,14 @@ Miner.Engine.Cell.Dirt = Miner.Engine.Cell.Dirt || Miner.Engine.Cell.extend({
             else {
                 this._modifier = 'Granite';
             }
-            
+        }
+        o.modifier = o.modifier || false;
+        this._modifier = o.modifier || this._modifier;
+        
+        if (this._modifier) {
             this._loadModifier(this._modifier);
         }
+        
         return this;
     },
     
@@ -273,7 +277,9 @@ Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.ext
     'init': function(o) {
         this._super(o);
         
-        this._bgImage = 'images/elevator.png';
+        if (this.grid.up(this).type !== 'Air') {
+            this._bgImage = 'images/elevator.png';
+        }
         
         this.hasCar = o.hasCar || false;
         this.type = 'Elevator';
@@ -328,42 +334,6 @@ Miner.Engine.Cell.Road = Miner.Engine.Cell.Road || Miner.Engine.Cell.extend({
     
     'onPlayerEnter': function(player) {
         return false;
-    },
-
-    'enter': function(player) {
-        return this._super(player);
-    },
-
-    'registerPlayer': function(player) {
-        return this._super(player);
-    },
-
-    'unregisterPlayer': function() {
-        return this._super();
-    },
-
-    'render': function(x,y) {
-        return this._super(x,y);
-    },
-
-    '_playSound': function(soundLabel) {
-        return this._super(soundLabel);
-    }
-});
-
-Miner.Engine.Cell.Water = Miner.Engine.Cell.Water || Miner.Engine.Cell.extend({
-    'init': function(o) {
-        o = o || {};
-        this._super(o);
-        this._bgImage = 'images/water.png';
-        
-        this.type = 'Water';
-        
-        return this;
-    },
-    
-    'hasPlayer': function(player) {
-        return this._super(player);
     },
 
     'enter': function(player) {
