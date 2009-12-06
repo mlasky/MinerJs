@@ -18,7 +18,7 @@ Miner.Engine.Data = Miner.Engine.Data || {
         'Platinum': {
             'bgImage': 'images/platinum_dirt.png',
             'onPlayerEnter': function(player) {
-                if (!player.transact({ 'gold': 1})) {
+                if (!player.transact({'type': 'platinum', 'amount': 1})) {
                     return false;
                 }
                 return player.position.cell.y === this.y ||
@@ -28,7 +28,7 @@ Miner.Engine.Data = Miner.Engine.Data || {
         'Gold': {
             'bgImage': 'images/gold_dirt.png',
             'onPlayerEnter': function(player) {
-                if (!player.transact({ 'gold': 1})) {
+                if (!player.transact({'type': 'gold', 'amount': 1})) {
                     return false;
                 }
                 return player.position.cell.y === this.y ||
@@ -38,7 +38,7 @@ Miner.Engine.Data = Miner.Engine.Data || {
         'Silver': {
             'bgImage': 'images/silver_dirt.png',
             'onPlayerEnter': function(player) {
-                if (!player.transact({ 'silver': 1})) {
+                if (!player.transact({'type': 'silver', 'amount': 1})) {
                     return false;
                 }
                 return player.position.cell.y === this.y ||
@@ -53,17 +53,26 @@ Miner.Engine.Data = Miner.Engine.Data || {
                     return false;
                 }
                 if (Miner.Engine.Util.randomChance(15)) {
-                    player.dropRandomItem();
+                    //player.dropRandomItem();
                 }
                 
                 var grid = player.position.cell.grid;
-                var subGrid = grid.getRect(player.cell.x, player.cell.y, 2);
+                var subGrid = grid.getRect(player.position.cell.x, player.position.cell.y, 2);
                 var lenSubGrid = subGrid.length;
                 
                 for (var i = 0; i < lenSubGrid; i++) {
                     var cell = subGrid[i];
-                    if (cell.type === 'Tunnel') {
-                        cell = new Miner.Engine.Cell.Dirt(cell);
+                    if ((cell.type === 'Dirt' && cell.dug === true) &&
+                        (cell.x !== player.position.x && cell.y !== player.position.y)) 
+                    {
+                        cell = new Miner.Engine.Cell.Dirt({
+                            'grid': grid,
+                            'game': player.game,
+                            'x': cell.x,
+                            'y': cell.y,
+                            'bgImage': 'images/dirt1.png'
+                        });
+                        grid.setCell(cell.x, cell.y, cell);
                     }
                 }
                 
@@ -94,7 +103,7 @@ Miner.Engine.Data = Miner.Engine.Data || {
                 }
                 
                 var grid = player.position.cell.grid;
-                var subGrid = grid.getRect(player.cell.x, player.cell.y, 2);
+                var subGrid = grid.getRect(player.position.cell.x, player.position.cell.y, 2);
                 var lenSubGrid = subGrid.length;
                 
                 for (var i = 0; i < lenSubGrid; i++) {

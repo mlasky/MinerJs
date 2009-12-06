@@ -13,10 +13,9 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
             'height': $(this._canvas).attr('height')
         }).get(0);
         this._bCtx = this._buffer.getContext("2d");
-	
-		return this;
+        return this;
     },
-	
+    
 	'render': function() {
 	    var self = this;
 	    window.setInterval(function() {

@@ -34,9 +34,6 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
         this.cols = map.numCols();
         this.rows = map.numRows();
         
-        console.log('cols: '+this.cols);
-        console.log('rows: '+this.rows);
-        
         for (var i = 0; i < len_mapArray; i++) {
             
             var row = mapArray[i];
@@ -71,6 +68,10 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
     
     'getCell': function(x, y) {
         return this._grid[this._getOffset(x, y)].cell;
+    },
+    
+    'setCell': function(x, y, cell) {
+        this._grid[this._getOffset(x, y)].cell = cell;
     },
     
     'left': function(cell) {
@@ -126,5 +127,20 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
         }
         
         return true;
+    },
+    
+    'getRect': function(x, y, size) {
+        var rect = [];
+        var width = (size * 2) + 1;
+        var height = (size * 2) + 1;
+        var base_cell = this.getCell(x - size, y - size);
+        
+        for (var i = 0; i < height; i++) {
+            for (var j = 0; j < width; j++) {
+                var cell = this.getCell(base_cell.x + j, base_cell.y + i);
+                rect.push(cell); 
+            }
+        }
+        return rect;
     }
 });
