@@ -29,7 +29,8 @@ Miner.Game.Player = Miner.Game.Player || Class.extend({
         o = o || {};
         var type = o.type;
         var amount = o.amount;
-        
+        console.log(type);
+        console.log(amount);
         if (!type || !amount || !(type in this.money)) {
             throw new TypeError('Invalid transaction object');
         }

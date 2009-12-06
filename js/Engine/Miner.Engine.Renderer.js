@@ -7,13 +7,13 @@ Miner.Engine.Renderer = Miner.Engine.Renderer || Class.extend({
         this._images = {};
         this._canvas = o.canvas || {};
         this._ctx = this._canvas.getContext("2d");
-		this._buffer = o.buffer || $('<canvas />').attr({
-		    'style': $(this._canvas).attr('style'),
-		    'width': $(this._canvas).attr('width'),
-		    'height': $(this._canvas).attr('height')
-		}).get(0);
-		this._bCtx = this._buffer.getContext("2d");
-		
+        this._buffer = o.buffer || $('<canvas />').attr({
+            'style': $(this._canvas).attr('style'),
+            'width': $(this._canvas).attr('width'),
+            'height': $(this._canvas).attr('height')
+        }).get(0);
+        this._bCtx = this._buffer.getContext("2d");
+	
 		return this;
     },
 	

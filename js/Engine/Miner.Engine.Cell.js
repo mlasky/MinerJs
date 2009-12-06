@@ -9,7 +9,7 @@ Miner.Engine.Cell = Miner.Engine.Cell || Class.extend({
         this._hasPlayer = o._hasPlayer || false;            // Player present (connonical)
         this._soundMgr = o.soundMgr || {};  // Sound management object
         this._sounds = o.sounds || {};      // Sound effects for this cell
-        this._grid = o.grid || {};           // Game grid object
+        this.grid = o.grid || {};           // Game grid object
         this._game = o.game || {};
         this.x = o.x || 0;
         this.y = o.y || 0;
@@ -88,8 +88,9 @@ Miner.Engine.Cell.Air = Miner.Engine.Cell.Air || Miner.Engine.Cell.extend({
     
     'onPlayerEnter': function(player) {
         // Player is approaching from the left or right
-        return player.game.grid.left(player.position.cell) === this ||
-            player.game.grid.right(player.position.cell) === this;
+        return (player.game.grid.left(player.position.cell) === this ||
+                player.game.grid.right(player.position.cell) === this) &&
+                player.position.cell.y === this.y;
     },
     
     'enter': function(player) {
@@ -156,10 +157,12 @@ Miner.Engine.Cell.Dirt = Miner.Engine.Cell.Dirt || Miner.Engine.Cell.extend({
             'images/dirt2.png';
         
         this.type = 'Dirt';
+        this.dug = false;
+        
         this._modifier = false;
         
         if (Miner.Engine.Util.randomChance()) {
-            var rand = Miner.Engine.Util.random();
+            var rand = Miner.Engine.Util.random(100, 1000);
             if (rand <= 3) {
                 this._modifier = 'Platinum';
             } 
@@ -181,12 +184,35 @@ Miner.Engine.Cell.Dirt = Miner.Engine.Cell.Dirt || Miner.Engine.Cell.extend({
             else {
                 this._modifier = 'Granite';
             }
+            
+            this._loadModifier(this._modifier);
         }
         return this;
     },
     
+    '_loadModifier': function(modifier) {
+        var modifiers = Miner.Engine.Data.cellData || {};
+        modifier = modifiers[modifier];
+        if (typeof modifier.onPlayerEnter === 'function') {
+            this.onPlayerEnter = modifier.onPlayerEnter;
+        }
+        
+        this._bgImage = modifier.bgImage || this._bgImage;
+    },
+    
     'hasPlayer': function(player) {
         return this._super(player);
+    },
+    
+    'onPlayerEnter': function(player) {
+        if (!(player.position.cell.y === this.y ||
+            player.position.cell.x === this.x)) 
+        {
+            return false;
+        }
+        this.dug = true;
+        this._bgImage = 'images/dug.png';
+        return true;
     },
 
     'enter': function(player) {
@@ -245,9 +271,10 @@ Miner.Engine.Cell.Tunnel = Miner.Engine.Cell.Tunnel || Miner.Engine.Cell.extend(
 
 Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.extend({
     'init': function(o) {
+        this._super(o);
+        
         this._bgImage = 'images/elevator.png';
         o.bgImage = this._bgImage;
-        this._super(o);
         
         this.hasCar = o.hasCar || false;
         this.type = 'Elevator';
