@@ -274,7 +274,6 @@ Miner.Engine.Cell.Elevator = Miner.Engine.Cell.Elevator || Miner.Engine.Cell.ext
         this._super(o);
         
         this._bgImage = 'images/elevator.png';
-        o.bgImage = this._bgImage;
         
         this.hasCar = o.hasCar || false;
         this.type = 'Elevator';

@@ -57,13 +57,15 @@ Miner.Engine.Data = Miner.Engine.Data || {
                 }
                 
                 var grid = player.position.cell.grid;
-                var subGrid = grid.getRect(player.position.cell.x, player.position.cell.y, 2);
+                var player_cell = player.position.cell;
+                
+                var subGrid = grid.getRect(5, grid.getCell(player_cell.x - 2, player_cell.y - 2));
                 var lenSubGrid = subGrid.length;
                 
                 for (var i = 0; i < lenSubGrid; i++) {
                     var cell = subGrid[i];
                     if ((cell.type === 'Dirt' && cell.dug === true) &&
-                        (cell.x !== player.position.x && cell.y !== player.position.y)) 
+                        (cell.x !== player_cell.x && cell.y !== player_cell.y)) 
                     {
                         cell = new Miner.Engine.Cell.Dirt({
                             'grid': grid,
@@ -103,13 +105,22 @@ Miner.Engine.Data = Miner.Engine.Data || {
                 }
                 
                 var grid = player.position.cell.grid;
-                var subGrid = grid.getRect(player.position.cell.x, player.position.cell.y, 2);
+                var player_cell = player.position.cell;
+                var subGrid = grid.getRect(5, grid.getCell(player_cell.x-2, player_cell.y));
                 var lenSubGrid = subGrid.length;
                 
                 for (var i = 0; i < lenSubGrid; i++) {
                     var cell = subGrid[i];
-                    if (cell.type === 'Tunnel') {
-                        cell = new Miner.Engine.Cell.Water(cell);
+                    if ((cell.type === 'Dirt' && cell.dug === true) &&
+                        (cell.x !== player_cell.x && cell.y !== player_cell.y)) 
+                    {
+                        cell = new Miner.Engine.Cell.Water({
+                            'grid': grid,
+                            'game': player.game,
+                            'x': cell.x,
+                            'y': cell.y
+                        });
+                        grid.setCell(cell.x, cell.y, cell);
                     }
                 }
                 return player.position.cell.y === this.y ||

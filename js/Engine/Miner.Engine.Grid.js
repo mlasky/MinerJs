@@ -129,16 +129,15 @@ Miner.Engine.Grid = Miner.Engine.Grid || Class.extend({
         return true;
     },
     
-    'getRect': function(x, y, size) {
+    'getRect': function(size, cell) {
         var rect = [];
-        var width = (size * 2) + 1;
-        var height = (size * 2) + 1;
-        var base_cell = this.getCell(x - size, y - size);
-        
-        for (var i = 0; i < height; i++) {
-            for (var j = 0; j < width; j++) {
-                var cell = this.getCell(base_cell.x + j, base_cell.y + i);
-                rect.push(cell); 
+        var x = cell.x;
+        var y = cell.y;
+        console.log(cell);
+        for (var i = 0; i < size; i++) {
+            for (var j = 0; j < size; j++) {
+                var nCell = this.getCell(x + j, y + i);
+                rect.push(nCell);
             }
         }
         return rect;
